@@ -33,7 +33,7 @@ Deno.test('Should add a letter to the grid', () => {
     '    ',
     '    ',
   ].map((row) => row.split(''));
-  actual.addLetter(letter, 1, 1);
+  actual.addSymbol(letter, 1, 1);
 
   assertEquals(actual.grid, expected);
 });
@@ -42,10 +42,10 @@ Deno.test('Should throw an error if letter is out of bounds', () => {
   const actual = new Grid(4, 4);
   const letter = 'D';
 
-  assertThrows(() => actual.addLetter(letter, 4, 0), RangeError);
-  assertThrows(() => actual.addLetter(letter, 0, 4), RangeError);
-  assertThrows(() => actual.addLetter(letter, -1, 0), RangeError);
-  assertThrows(() => actual.addLetter(letter, 0, -1), RangeError);
+  assertThrows(() => actual.addSymbol(letter, 4, 0), RangeError);
+  assertThrows(() => actual.addSymbol(letter, 0, 4), RangeError);
+  assertThrows(() => actual.addSymbol(letter, -1, 0), RangeError);
+  assertThrows(() => actual.addSymbol(letter, 0, -1), RangeError);
 });
 
 Deno.test('Should add a word in a grid horizontally', () => {

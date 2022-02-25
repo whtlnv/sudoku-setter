@@ -22,7 +22,7 @@ export class Grid {
     return this;
   }
 
-  addLetter(letter: string, column: number, row: number) {
+  addSymbol(letter: string, column: number, row: number) {
     if (row < 0 || row >= this.rows || column < 0 || column >= this.columns) {
       throw new RangeError();
     }
@@ -35,11 +35,11 @@ export class Grid {
     const wordArray = word.split('');
     if (direction === 'horizontal') {
       wordArray.forEach((letter, index) => {
-        this.addLetter(letter, column + index, row);
+        this.addSymbol(letter, column + index, row);
       });
     } else {
       wordArray.forEach((letter, index) => {
-        this.addLetter(letter, column, row + index);
+        this.addSymbol(letter, column, row + index);
       });
     }
   }
