@@ -1,5 +1,5 @@
 import { assertEquals, assertThrows } from 'https://deno.land/std@0.126.0/testing/asserts.ts';
-import { Grid } from './buildGrid.ts';
+import { Grid } from './Grid.ts';
 
 Deno.test('Should initialize a grid with the given size', () => {
   const rows = 4;
