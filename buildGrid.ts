@@ -44,6 +44,14 @@ export class Grid {
     }
   }
 
+  getRow(row: number) {
+    return this._grid[row];
+  }
+
+  getColumn(column: number) {
+    return this._grid.map((row) => row[column]);
+  }
+
   printGrid() {
     console.log(this._grid.map((row) => row.join(' ')).join('\n'));
   }
