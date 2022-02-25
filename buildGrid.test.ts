@@ -1,20 +1,30 @@
 import { assertEquals, assertThrows } from 'https://deno.land/std@0.126.0/testing/asserts.ts';
-import { addLetterToGrid, addWordToGrid, initGrid, OutOfBoundsError } from './buildGrid.ts';
+import { Grid } from './buildGrid.ts';
+
+Deno.test('Should initialize a grid with the given size', () => {
+  const rows = 4;
+  const colmuns = 4;
+
+  const actual = new Grid(rows, colmuns);
+
+  assertEquals(actual.rows, rows);
+  assertEquals(actual.columns, colmuns);
+});
 
 Deno.test('Should initialize an empty grid', () => {
-  const width = 4;
-  const height = 4;
+  const rows = 4;
+  const colmuns = 4;
 
-  const row = new Array(width).fill(' ');
-  const expected = new Array(height).fill(row);
+  const row = new Array(rows).fill(' ');
+  const expected = new Array(colmuns).fill(row);
 
-  const actual = initGrid(width, height);
+  const actual = new Grid(rows, colmuns);
 
-  assertEquals(actual, expected);
+  assertEquals(actual.grid, expected);
 });
 
 Deno.test('Should add a letter to the grid', () => {
-  const grid = initGrid(4, 4);
+  const actual = new Grid(4, 4);
   const letter = 'D';
 
   const expected = [
@@ -23,20 +33,23 @@ Deno.test('Should add a letter to the grid', () => {
     '    ',
     '    ',
   ].map((row) => row.split(''));
-  const actual = addLetterToGrid(grid, letter, 1, 1);
+  actual.addLetter(letter, 1, 1);
 
-  assertEquals(actual, expected);
+  assertEquals(actual.grid, expected);
 });
 
 Deno.test('Should throw an error if letter is out of bounds', () => {
-  const grid = initGrid(4, 4);
+  const actual = new Grid(4, 4);
   const letter = 'D';
 
-  assertThrows(() => addLetterToGrid(grid, letter, 5, 5), OutOfBoundsError);
+  assertThrows(() => actual.addLetter(letter, 4, 0), RangeError);
+  assertThrows(() => actual.addLetter(letter, 0, 4), RangeError);
+  assertThrows(() => actual.addLetter(letter, -1, 0), RangeError);
+  assertThrows(() => actual.addLetter(letter, 0, -1), RangeError);
 });
 
 Deno.test('Should add a word in a grid horizontally', () => {
-  const grid = initGrid(4, 4);
+  const actual = new Grid(4, 4);
   const word = 'foo';
 
   const expected = [
@@ -46,13 +59,13 @@ Deno.test('Should add a word in a grid horizontally', () => {
     '    ',
   ].map((row) => row.split(''));
 
-  const actual = addWordToGrid(grid, word, 1, 2, 'horizontal');
+  actual.addWord(word, 1, 2, 'horizontal');
 
-  assertEquals(actual, expected);
+  assertEquals(actual.grid, expected);
 });
 
 Deno.test('Should add a word in a grid vertically', () => {
-  const grid = initGrid(4, 4);
+  const actual = new Grid(4, 4);
   const word = 'foo';
 
   const expected = [
@@ -62,14 +75,15 @@ Deno.test('Should add a word in a grid vertically', () => {
     ' o  ',
   ].map((row) => row.split(''));
 
-  const actual = addWordToGrid(grid, word, 1, 1, 'vertical');
+  actual.addWord(word, 1, 1, 'vertical');
 
-  assertEquals(actual, expected);
+  assertEquals(actual.grid, expected);
 });
 
 Deno.test('Should throw an error if word is out of bounds', () => {
-  const grid = initGrid(4, 4);
+  const actual = new Grid(4, 4);
   const word = 'Deuteronomical';
 
-  assertThrows(() => addWordToGrid(grid, word, 1, 1, 'vertical'), OutOfBoundsError);
+  assertThrows(() => actual.addWord(word, 1, 1, 'horizontal'), RangeError);
+  assertThrows(() => actual.addWord(word, 1, 1, 'vertical'), RangeError);
 });
