@@ -1,20 +1,28 @@
 export type Direction = 'horizontal' | 'vertical';
 
 export class Grid {
-  columns: number;
-  rows: number;
+  private _columns: number;
+  private _rows: number;
   private _grid: string[][];
 
   constructor(rows: number, columns: number) {
-    this.columns = columns;
-    this.rows = rows;
+    this._columns = columns;
+    this._rows = rows;
     this._grid = [];
 
     this.resetGrid(rows, columns);
   }
 
-  public get grid() {
+  get grid() {
     return this._grid;
+  }
+
+  get columns() {
+    return this._columns;
+  }
+
+  get rows() {
+    return this._rows;
   }
 
   resetGrid(columns: number, rows: number) {
@@ -23,7 +31,7 @@ export class Grid {
   }
 
   addSymbol(letter: string, column: number, row: number) {
-    if (row < 0 || row >= this.rows || column < 0 || column >= this.columns) {
+    if (row < 0 || row >= this._rows || column < 0 || column >= this._columns) {
       throw new RangeError();
     }
 
