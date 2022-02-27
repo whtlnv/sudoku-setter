@@ -88,6 +88,18 @@ Deno.test('Should throw an error if word is out of bounds', () => {
   assertThrows(() => actual.addWord(word, 1, 1, 'vertical'), RangeError);
 });
 
+Deno.test('Should expose a single cell', () => {
+  const grid = new Grid(4, 4);
+  const word = 'foo';
+
+  grid.addWord(word, 0, 0, 'vertical');
+
+  const expected = word[1];
+  const actual = grid.getCell(0, 1);
+
+  assertEquals(actual, expected);
+});
+
 Deno.test('Should expose a given row', () => {
   const grid = new Grid(4, 4);
   const word = 'foo';

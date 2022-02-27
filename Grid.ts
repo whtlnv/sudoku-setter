@@ -44,6 +44,10 @@ export class Grid {
     }
   }
 
+  getCell(column: number, row: number) {
+    return this._grid[row][column];
+  }
+
   getRow(row: number) {
     return this._grid[row];
   }
