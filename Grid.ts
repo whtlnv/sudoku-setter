@@ -27,6 +27,10 @@ export class Grid {
     return this._rows;
   }
 
+  get orderedSymbols() {
+    return this._orderedSymbols;
+  }
+
   resetGrid(columns: number, rows: number) {
     this._grid = new Array(rows).fill('').map(() => new Array(columns).fill(' '));
     return this;
