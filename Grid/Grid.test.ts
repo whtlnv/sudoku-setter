@@ -3,22 +3,22 @@ import { Grid } from './Grid.ts';
 
 Deno.test('Should initialize a grid with the given size', () => {
   const rows = 4;
-  const colmuns = 4;
+  const columns = 4;
 
-  const actual = new Grid(rows, colmuns, []);
+  const actual = new Grid(rows, columns, []);
 
   assertEquals(actual.rows, rows);
-  assertEquals(actual.columns, colmuns);
+  assertEquals(actual.columns, columns);
 });
 
 Deno.test('Should initialize an empty grid', () => {
   const rows = 4;
-  const colmuns = 4;
+  const columns = 4;
 
   const row = new Array(rows).fill(' ');
-  const expected = new Array(colmuns).fill(row);
+  const expected = new Array(columns).fill(row);
 
-  const actual = new Grid(rows, colmuns, []);
+  const actual = new Grid(rows, columns, []);
 
   assertEquals(actual.grid, expected);
 });
