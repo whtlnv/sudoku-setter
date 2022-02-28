@@ -1,4 +1,5 @@
 import * as Colors from 'https://deno.land/std@0.127.0/fmt/colors.ts';
+import Output from './Output.ts';
 
 const ACTIONS: Record<string, () => void> = {
   insert: insert,
@@ -8,9 +9,8 @@ const ACTIONS: Record<string, () => void> = {
 };
 
 function readFromPrompt() {
-  const input = prompt('What do you want to do?') ?? 'help';
-  const actionName = input.trim().toLowerCase();
-  const action = ACTIONS[actionName.toLowerCase()] || help;
+  const actionName = Output.prompt('What do you want to do?', 'help');
+  const action = ACTIONS[actionName.trim().toLowerCase()] || help;
   action();
 }
 
@@ -22,12 +22,12 @@ function log(kind: 'info' | 'error' | 'success', message: string) {
   };
 
   const color = colors[kind];
-  console.log(color(`[${kind}]`), message);
+  Output.printLine(color(`[${kind}]`), message);
 }
 
 function insert() {
   while (true) {
-    const cellInput = prompt('Cell location') ?? '';
+    const cellInput = Output.prompt('Cell location', '');
 
     const [column, row] = cellInput.split(',').map(Number);
     if (isNaN(column) || isNaN(row)) {
@@ -35,9 +35,8 @@ function insert() {
       continue;
     }
 
-    const symbol = prompt('Symbol') ?? '';
+    const symbol = Output.prompt('Symbol', '');
 
-    // should emit instead
     log('success', `Inserting ${symbol} at ${column}, ${row}`);
     return;
   }
@@ -50,12 +49,12 @@ function print() {
 function help() {
   const title = (text: string) => `${Colors.bold(text)}`;
 
-  console.group(Colors.blue('Available actions:'));
-  console.log(title('insert'), 'put stuff in the grid');
-  console.log(title('print'), 'print stuff in the grid');
-  console.log(title('help'), 'this thing');
-  console.log(title('exit'), 'exit the program');
-  console.groupEnd();
+  Output.printGroup(Colors.blue('Available actions:'), [
+    `${title('insert')} put stuff in the grid`,
+    `${title('print')} print stuff in the grid`,
+    `${title('help')} this thing`,
+    `${title('exit')} exit the program`,
+  ]);
 }
 
 export function start() {
