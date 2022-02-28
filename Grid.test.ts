@@ -5,7 +5,7 @@ Deno.test('Should initialize a grid with the given size', () => {
   const rows = 4;
   const colmuns = 4;
 
-  const actual = new Grid(rows, colmuns);
+  const actual = new Grid(rows, colmuns, []);
 
   assertEquals(actual.rows, rows);
   assertEquals(actual.columns, colmuns);
@@ -18,13 +18,13 @@ Deno.test('Should initialize an empty grid', () => {
   const row = new Array(rows).fill(' ');
   const expected = new Array(colmuns).fill(row);
 
-  const actual = new Grid(rows, colmuns);
+  const actual = new Grid(rows, colmuns, []);
 
   assertEquals(actual.grid, expected);
 });
 
 Deno.test('Should add a letter to the grid', () => {
-  const actual = new Grid(4, 4);
+  const actual = new Grid(4, 4, []);
   const letter = 'D';
 
   const expected = [
@@ -39,7 +39,7 @@ Deno.test('Should add a letter to the grid', () => {
 });
 
 Deno.test('Should throw an error if letter is out of bounds', () => {
-  const actual = new Grid(4, 4);
+  const actual = new Grid(4, 4, []);
   const letter = 'D';
 
   assertThrows(() => actual.addSymbol(letter, 4, 0), RangeError);
@@ -49,7 +49,7 @@ Deno.test('Should throw an error if letter is out of bounds', () => {
 });
 
 Deno.test('Should add a word in a grid horizontally', () => {
-  const actual = new Grid(4, 4);
+  const actual = new Grid(4, 4, []);
   const word = 'foo';
 
   const expected = [
@@ -65,7 +65,7 @@ Deno.test('Should add a word in a grid horizontally', () => {
 });
 
 Deno.test('Should add a word in a grid vertically', () => {
-  const actual = new Grid(4, 4);
+  const actual = new Grid(4, 4, []);
   const word = 'foo';
 
   const expected = [
@@ -81,7 +81,7 @@ Deno.test('Should add a word in a grid vertically', () => {
 });
 
 Deno.test('Should throw an error if word is out of bounds', () => {
-  const actual = new Grid(4, 4);
+  const actual = new Grid(4, 4, []);
   const word = 'Deuteronomical';
 
   assertThrows(() => actual.addWord(word, 1, 1, 'horizontal'), RangeError);
@@ -89,7 +89,7 @@ Deno.test('Should throw an error if word is out of bounds', () => {
 });
 
 Deno.test('Should expose a single cell', () => {
-  const grid = new Grid(4, 4);
+  const grid = new Grid(4, 4, []);
   const word = 'foo';
 
   grid.addWord(word, 0, 0, 'vertical');
@@ -101,7 +101,7 @@ Deno.test('Should expose a single cell', () => {
 });
 
 Deno.test('Should expose a given row', () => {
-  const grid = new Grid(4, 4);
+  const grid = new Grid(4, 4, []);
   const word = 'foo';
 
   grid.addWord(word, 1, 2, 'horizontal');
@@ -113,7 +113,7 @@ Deno.test('Should expose a given row', () => {
 });
 
 Deno.test('Should expose a given column', () => {
-  const grid = new Grid(4, 4);
+  const grid = new Grid(4, 4, []);
   const word = 'foo';
 
   grid.addWord(word, 1, 1, 'vertical');

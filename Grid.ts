@@ -3,11 +3,13 @@ export type Direction = 'horizontal' | 'vertical';
 export class Grid {
   private _columns: number;
   private _rows: number;
+  private _orderedSymbols: string[];
   private _grid: string[][];
 
-  constructor(rows: number, columns: number) {
+  constructor(rows: number, columns: number, orderedSymbols: string[]) {
     this._columns = columns;
     this._rows = rows;
+    this._orderedSymbols = orderedSymbols;
     this._grid = [];
 
     this.resetGrid(rows, columns);
