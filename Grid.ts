@@ -36,24 +36,24 @@ export class Grid {
     return this;
   }
 
-  addSymbol(letter: string, column: number, row: number) {
+  addSymbol(symbol: string, column: number, row: number) {
     if (row < 0 || row >= this._rows || column < 0 || column >= this._columns) {
       throw new RangeError();
     }
 
-    this._grid[row][column] = letter;
+    this._grid[row][column] = symbol;
     return this;
   }
 
   addWord(word: string, column: number, row: number, direction: Direction) {
     const wordArray = word.split('');
     if (direction === 'horizontal') {
-      wordArray.forEach((letter, index) => {
-        this.addSymbol(letter, column + index, row);
+      wordArray.forEach((symbol, index) => {
+        this.addSymbol(symbol, column + index, row);
       });
     } else {
-      wordArray.forEach((letter, index) => {
-        this.addSymbol(letter, column, row + index);
+      wordArray.forEach((symbol, index) => {
+        this.addSymbol(symbol, column, row + index);
       });
     }
   }
