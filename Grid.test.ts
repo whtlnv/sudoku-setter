@@ -52,7 +52,7 @@ Deno.test('Should throw an error if symbol isnt supported', () => {
   const actual = new Grid(4, 4, ['D']);
   const letter = 'E';
 
-  assertThrows(() => actual.addSymbol(letter, 1, 1), Deno.errors.NotSupported);
+  assertThrows(() => actual.addSymbol(letter, 1, 1), Deno.errors.InvalidData);
 });
 
 Deno.test('Should add a word in a grid horizontally', () => {

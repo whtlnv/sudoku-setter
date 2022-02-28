@@ -38,7 +38,7 @@ export class Grid {
 
   addSymbol(symbol: string, column: number, row: number) {
     if (!this.orderedSymbols.includes(symbol)) {
-      throw new Deno.errors.NotSupported(`Symbol ${symbol} is not in the list of ordered symbols`);
+      throw new Deno.errors.InvalidData(`Symbol ${symbol} is not in the list of ordered symbols`);
     }
 
     if (row < 0 || row >= this._rows || column < 0 || column >= this._columns) {
