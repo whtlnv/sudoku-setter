@@ -58,10 +58,8 @@ function help() {
   console.groupEnd();
 }
 
-function start() {
+export function start() {
   while (true) {
     readFromPrompt();
   }
 }
-
-start();
