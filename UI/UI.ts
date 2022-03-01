@@ -1,64 +1,73 @@
 import * as Colors from 'https://deno.land/std@0.127.0/fmt/colors.ts';
-import Output from './Output.ts';
+// import { EventEmitter } from 'https://deno.land/std@0.127.0/node/events.ts';
 
-const ACTIONS: Record<string, () => void> = {
-  insert: insert,
-  print: print,
-  help: help,
-  exit: Deno.exit,
-};
-
-function readFromPrompt() {
-  const actionName = Output.prompt('What do you want to do?', 'help');
-  const action = ACTIONS[actionName.trim().toLowerCase()] || help;
-  action();
+interface Printer {
+  printLine(...data: string[]): void;
+  printGroup(title: string, elements: string[]): void;
+  prompt(message: string, defaultValue: string): string;
 }
 
-function log(kind: 'info' | 'error' | 'success', message: string) {
-  const colors = {
-    info: Colors.blue,
-    error: Colors.red,
-    success: Colors.green,
+export default class UI {
+  // private _eventEmitter: EventEmitter;
+  private _output: Printer;
+  private actions: Record<string, () => void> = {
+    insert: this.insert.bind(this),
+    print: this.print.bind(this),
+    help: this.help.bind(this),
+    exit: Deno.exit,
   };
 
-  const color = colors[kind];
-  Output.printLine(color(`[${kind}]`), message);
-}
-
-function insert() {
-  while (true) {
-    const cellInput = Output.prompt('Cell location', '');
-
-    const [column, row] = cellInput.split(',').map(Number);
-    if (isNaN(column) || isNaN(row)) {
-      log('error', 'Invalid cell location');
-      continue;
-    }
-
-    const symbol = Output.prompt('Symbol', '');
-
-    log('success', `Inserting ${symbol} at ${column}, ${row}`);
-    return;
+  constructor(output: Printer) {
+    this._output = output;
   }
-}
 
-function print() {
-  log('info', 'printing...');
-}
+  readFromPrompt(): void {
+    const actionName = this._output.prompt('What do you want to do?', 'help');
+    const action =
+      this.actions[actionName.trim().toLowerCase()] || this.actions.help;
+    action();
+  }
 
-function help() {
-  const title = (text: string) => `${Colors.bold(text)}`;
+  printStatus(kind: 'info' | 'error' | 'success', message: string): void {
+    const colors = {
+      info: Colors.blue,
+      error: Colors.red,
+      success: Colors.green,
+    };
 
-  Output.printGroup(Colors.blue('Available actions:'), [
-    `${title('insert')} put stuff in the grid`,
-    `${title('print')} print stuff in the grid`,
-    `${title('help')} this thing`,
-    `${title('exit')} exit the program`,
-  ]);
-}
+    const color = colors[kind];
+    this._output.printLine(color(`[${kind}]`), message);
+  }
 
-export function start() {
-  while (true) {
-    readFromPrompt();
+  help(): void {
+    const title = (text: string) => `${Colors.bold(text)}`;
+
+    this._output.printGroup(Colors.blue('Available actions:'), [
+      `${title('insert')} put stuff in the grid`,
+      `${title('print')} print stuff in the grid`,
+      `${title('help')} this thing`,
+      `${title('exit')} exit the program`,
+    ]);
+  }
+
+  insert(): void {
+    while (true) {
+      const cellInput = this._output.prompt('Cell location', '');
+
+      const [column, row] = cellInput.split(',').map(Number);
+      if (isNaN(column) || isNaN(row)) {
+        this.printStatus('error', 'Invalid cell location');
+        continue;
+      }
+
+      const symbol = this._output.prompt('Symbol', '');
+
+      this.printStatus('success', `Inserting ${symbol} at ${column}, ${row}`);
+      return;
+    }
+  }
+
+  print(): void {
+    this.printStatus('info', 'printing...');
   }
 }
